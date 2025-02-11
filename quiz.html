@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autovalutazione Salute Orale</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        .quiz-container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.2);
+        }
+        .question {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        .options button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: none;
+            cursor: pointer;
+            background-color: #007BFF;
+            color: white;
+            border-radius: 5px;
+        }
+        .options button:hover {
+            background-color: #0056b3;
+        }
+        #result {
+            font-size: 20px;
+            margin-top: 20px;
+        }
+        #logo {
+            width: 150px; /* Puoi regolare la larghezza del logo */
+            margin-bottom: 20px; /* Distanza tra logo e quiz */
+        }
+    </style>
+</head>
+<body>
+
+
+    <img src="C:/Users/Utente/Desktop/Quiz/logo.jpg" alt="Logo Studio Dentistico"> 
+    <div class="quiz-container">
+        <h2>Autovalutazione della Salute Orale</h2>
+        <div id="quiz">
+            <p class="question" id="question"></p>
+            <div class="options">
+                <button onclick="selectAnswer(0)" id="option0"></button>
+                <button onclick="selectAnswer(1)" id="option1"></button>
+                <button onclick="selectAnswer(2)" id="option2"></button>
+            </div>
+        </div>
+        <button id="nextButton" onclick="nextQuestion()" style="display:none; margin-top: 10px;">Prossima domanda</button>
+        <p id="result"></p>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "Hai mai notato sanguinamento dalle gengive durante o dopo lo spazzolamento?",
+                options: ["Mai", "Occasionalmente", "Spesso"],
+                correct: 2,
+                feedback: "Il sanguinamento gengivale può essere un segno di gengivite. Ti consigliamo di consultare un dentista per una valutazione."
+            },
+            {
+                question: "Soffri di alito cattivo persistente?",
+                options: ["No", "A volte", "Spesso"],
+                correct: 2,
+                feedback: "L'alito cattivo può essere causato da problemi alle gengive o dalla carie. Una pulizia professionale potrebbe essere utile."
+            },
+            {
+                question: "Hai mai notato dolore o sensibilità ai denti durante il consumo di cibi caldi o freddi?",
+                options: ["No", "A volte", "Sì, frequentemente"],
+                correct: 2,
+                feedback: "La sensibilità dentale potrebbe essere legata a problemi di smalto o gengive. Consulta il dentista per un controllo."
+            },
+            {
+                question: "Hai notato delle macchie sui tuoi denti?",
+                options: ["Mai", "Macchie leggere", "Macchie scure o evidenti"],
+                correct: 2,
+                feedback: "Le macchie scure potrebbero essere causate da caffè, tè o fumo. Una visita dal dentista può aiutare a rimuoverle."
+            },
+            {
+                question: "Senti dolore o fastidio quando masticando cibi duri?",
+                options: ["No", "Occasionalmente", "Sì, frequentemente"],
+                correct: 2,
+                feedback: "Il dolore durante la masticazione può essere causato da carie o altri problemi. È meglio fare una visita per capire la causa."
+            },
+            {
+                question: "Hai notato che le tue gengive si ritirano (si allontanano dal dente)?",
+                options: ["No", "Sì, leggermente", "Sì, in modo evidente"],
+                correct: 2,
+                feedback: "Le gengive ritirate possono essere un segno di parodontite. Ti consigliamo di vedere un dentista per una diagnosi e un trattamento."
+            },
+            {
+                question: "Hai difficoltà ad aprire completamente la bocca o dolore ai muscoli masticatori?",
+                options: ["No", "A volte", "Sì, frequentemente"],
+                correct: 2,
+                feedback: "Questo potrebbe essere segno di problemi con l'articolazione temporo-mandibolare (ATM). Consulta un dentista o un medico specialista."
+            },
+            {
+                question: "Ti capita di digrignare i denti, soprattutto di notte?",
+                options: ["No", "A volte", "Sì, spesso"],
+                correct: 2,
+                feedback: "Il bruxismo può danneggiare i denti e causare dolore muscolare. Parla con il tuo dentista per trovare una soluzione."
+            },
+            {
+                question: "Hai notato un cattivo odore o sapore in bocca durante la notte?",
+                options: ["No", "A volte", "Spesso"],
+                correct: 2,
+                feedback: "Potrebbe essere legato alla secchezza delle fauci o a infezioni. Parla con il dentista per escludere altre cause."
+            },
+            {
+                question: "Soffri di frequenti afte o lesioni in bocca?",
+                options: ["No", "A volte", "Sì, frequentemente"],
+                correct: 2,
+                feedback: "Le afte possono essere legate a stress, dieta o altri fattori. Se persistono, consulta un dentista."
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+
+        function loadQuestion() {
+            document.getElementById("question").innerText = questions[currentQuestion].question;
+            document.getElementById("option0").innerText = questions[currentQuestion].options[0];
+            document.getElementById("option1").innerText = questions[currentQuestion].options[1];
+            document.getElementById("option2").innerText = questions[currentQuestion].options[2];
+            document.getElementById("nextButton").style.display = "none";
+        }
+
+        function selectAnswer(option) {
+            if (option === questions[currentQuestion].correct) {
+                score++;
+            }
+            document.getElementById("result").innerText = questions[currentQuestion].feedback;
+            document.getElementById("nextButton").style.display = "block";
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            document.getElementById("result").innerText = "";
+            if (currentQuestion < questions.length) {
+                loadQuestion();
+            } else {
+                let message = "";
+                if (score >= 8) {
+                    message = "Ottimo! La tua salute orale è in ottime condizioni.";
+                } else if (score >= 5) {
+                    message = "Buono! Tuttavia, alcuni aspetti potrebbero essere migliorati.";
+                } else {
+                    message = "È consigliabile fare una visita odontoiatrica per una valutazione più approfondita.";
+                }
+                document.getElementById("quiz").innerHTML = `<h3>Hai ottenuto ${score} su ${questions.length}!</h3><p>${message}</p>`;
+            }
+        }
+
+        loadQuestion();
+    </script>
+
+</body>
+</html>
